@@ -1,8 +1,8 @@
 import Button from "./Button";
-import { ChangeEvent, useState, useRef, useEffect, Dispatch } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 interface SearchBarProps {
-  submitTerm: Dispatch<React.SetStateAction<string>>;
+  submitTerm: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function SearchBar(props: SearchBarProps) {
@@ -14,14 +14,22 @@ function SearchBar(props: SearchBarProps) {
     inputRef.current?.focus();
   }, []);
 
-  const handleSearchTermChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleSearchTermChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setTerm(event.target.value);
+  };
+
+  const handleSearchTermSubmit = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    submitTerm(term);
+    setTerm("");
   };
 
   return (
     <form
       id="search-form"
-      onSubmit={() => submitTerm(term)}
+      onSubmit={handleSearchTermSubmit}
       className="w-96 m-auto flex flex-row justify-between pb-2 border-b-[1px] border-b-green-500"
     >
       <input
